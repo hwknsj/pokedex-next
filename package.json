@@ -1,0 +1,47 @@
+{
+  "author": {
+    "email": "joel@joel.fm",
+    "name": "joél hawkins torres",
+    "url": "https://joel.fm"
+  },
+  "dependencies": {
+    "@apollo/client": "3.6.9",
+    "deepmerge": "^4.2.2",
+    "graphql": "^16.6.0",
+    "lodash.isequal": "^4.5.0",
+    "next": "canary",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.54.6"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "@types/lodash.isequal": "^4",
+    "@types/node": "^18.7.14",
+    "@types/prettier": "^2.7.0",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.0",
+    "@typescript-eslint/parser": "^5.36.0",
+    "eslint": "^8.23.0",
+    "eslint-config-next": "^12.2.6-canary.6",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.9.0-dev.20220829"
+  },
+  "license": "MIT",
+  "name": "pokedex-next",
+  "packageManager": "yarn@4.0.0-rc.15",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hwknsj/pokedex-next"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next",
+    "start": "next start"
+  },
+  "version": "0.1.0"
+}
