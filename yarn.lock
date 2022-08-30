@@ -2700,9 +2700,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pokedex-apollo@workspace:.":
+"pokedex-next@workspace:.":
   version: 0.0.0-use.local
-  resolution: "pokedex-apollo@workspace:."
+  resolution: "pokedex-next@workspace:."
   dependencies:
     "@apollo/client": "npm:3.6.9"
     "@types/graphql": "npm:^14.5.0"
