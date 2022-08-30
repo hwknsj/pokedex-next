@@ -30,7 +30,7 @@
     "prettier": "^2.7.1",
     "typescript": "^4.9.0-dev.20220829"
   },
-  "license": "MIT",
+  "license": "apache-2.0",
   "name": "pokedex-next",
   "packageManager": "yarn@4.0.0-rc.15",
   "private": true,
