@@ -2,20 +2,61 @@ import SpeciesGrid, {
   ALL_SPECIES_QUERY,
   allSpeciesQueryVariables
 } from '../components/species-list'
-import { initializeApollo, addApolloState } from '../lib/apollo-client'
+import styled from '@emotion/styled'
+import type { Theme } from '@/styles/theme'
+import { css, useTheme } from '@emotion/react'
+import {
+  initializeApollo,
+  addApolloState,
+  APOLLO_STATE_PROP_NAME
+} from '../lib/apollo-client'
+import { useRouter } from 'next/router'
 
-const IndexPage = () => <SpeciesGrid />
+const LoadButton = styled.button`
+  ${({ theme }: { theme: Theme }) => css(theme.buttons.primary)};
+  min-height: 4rem;
+  padding: 2rem;
+  font-weight: 800;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  max-width: 40rem;
+`
+
+const IndexPage = (props: any) => {
+  console.log({ props })
+  const {
+    data: {
+      species,
+      aggregate: {
+        aggregate: { count }
+      }
+    },
+    loading,
+    networkStatus
+  } = props
+
+  return (
+    <SpeciesGrid
+      species={species}
+      count={count}
+      loading={loading}
+      networkStatus={networkStatus}
+    />
+  )
+}
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
-  await apolloClient.query({
+  const { data, loading, error, networkStatus } = await apolloClient.query({
     query: ALL_SPECIES_QUERY,
-    variables: allSpeciesQueryVariables
+    variables: allSpeciesQueryVariables,
+    notifyOnNetworkStatusChange: true
   })
 
   return addApolloState(apolloClient, {
-    props: {},
+    props: { data, networkStatus, loading },
     revalidate: 1
   })
 }

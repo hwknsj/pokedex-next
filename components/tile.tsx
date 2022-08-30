@@ -46,8 +46,13 @@ export const TileStyled = styled.div<TileProps>`
 
 const Tile = ({
   name,
-  image
-}: { name: string; image: string } & PropsWithChildren) => {
+  image,
+  onClick
+}: {
+  name: string
+  image: string
+  onClick?: () => void
+} & PropsWithChildren) => {
   return (
     <TileStyled>
       <img src={image} alt={name} />

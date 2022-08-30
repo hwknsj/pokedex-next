@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { useApollo } from '@/lib/apollo-client'
 import { GlobalStyles } from '@/styles/globalStyles'
 import { ThemeProvider } from '@/lib/theme-context'
+import '../styles/global.scss'
 
 import { Layout } from '@/components/layout'
 

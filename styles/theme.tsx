@@ -312,21 +312,21 @@ const buttonSchema = (
   small: {
     ...typeography.button3,
     height: '3.6rem',
-    borderRadius: '3rem',
+    // borderRadius: '3rem',
     padding: '0.6rem 1.2rem',
     minWidth: '9rem'
   },
   medium: {
     ...typeography.button2,
     height: '4.8rem',
-    borderRadius: '3rem',
+    // borderRadius: '3rem',
     padding: '1.2rem 2.4rem',
     minWidth: '9.8rem'
   },
   large: {
     ...typeography.button1,
     height: '6rem',
-    borderRadius: '3rem',
+    // borderRadius: '3rem',
     padding: '1.7rem 8rem',
     width: '32.7rem'
   }

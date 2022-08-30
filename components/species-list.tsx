@@ -1,8 +1,11 @@
 import { gql, useQuery, NetworkStatus } from '@apollo/client'
 import styled from '@emotion/styled'
 import { css, useTheme } from '@emotion/react'
-import { useRef } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import Tile from './tile'
+import type { Theme } from '@/styles/theme'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const SpeciesGridStyles = styled.section`
   display: grid;
@@ -15,17 +18,6 @@ const SpeciesGridStyles = styled.section`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-`
-
-const LoadButton = styled.button`
-  ${({ theme }) => css(theme.buttons.primary)};
-  min-height: 4rem;
-  padding: 2rem;
-  font-weight: 800;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  max-width: 40rem;
 `
 
 export const ALL_SPECIES_QUERY = gql`
@@ -65,7 +57,7 @@ export const ALL_SPECIES_QUERY = gql`
         description
       }
     }
-    pokemon_v2_pokemonspecies_aggregate(
+    aggregate: pokemon_v2_pokemonspecies_aggregate(
       where: { generation_id: { _eq: $generation_id } }
     ) {
       aggregate {
@@ -76,76 +68,109 @@ export const ALL_SPECIES_QUERY = gql`
 `
 
 export const allSpeciesQueryVariables = {
-  offset: 0,
-  limit: 25
+  offset: 0
+  // limit: 0
 }
 
-export const SpeciesGrid = () => {
-  const offset = useRef(0)
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(
-    ALL_SPECIES_QUERY,
-    {
-      variables: allSpeciesQueryVariables,
-      notifyOnNetworkStatusChange: true
+export const SpeciesGrid = ({
+  species,
+  count,
+  loading,
+  networkStatus
+}: {
+  species: any
+  count: number
+  loading: boolean
+  networkStatus: any
+}) => {
+  const [saved, setSaved] = useState<number[]>([])
+  // const [offset, setOffset] = useState(species.length)
+  // const offset = useRef(species.length)
+  // const { loading, error, data, fetchMore, networkStatus } = useQuery(
+  //   ALL_SPECIES_QUERY,
+  //   {
+  //     variables: allSpeciesQueryVariables,
+  //     notifyOnNetworkStatusChange: true
+  //   }
+  // )
+
+  const { pathname, query } = useRouter()
+
+  const handleSave = (poke: any) => {
+    const { id } = poke
+    // @ts-ignore
+    const index = saved.indexOf(id)
+    if (index >= 0) {
+      // id exists in saved
+      setSaved([...saved.slice(0, index), ...saved.slice(index + 1)])
+      return
+    } else {
+      setSaved([...saved, id])
     }
-  )
+    console.log({ saved })
+    return saved
+  }
 
   const theme = useTheme()
   console.log({ theme })
 
   const loadingMoreSpecies = networkStatus === NetworkStatus.fetchMore
-  const {
-    species,
-    pokemon_v2_pokemonspecies_aggregate: {
-      aggregate: { count }
-    }
-  } = data
-  console.log({ data })
+  // const {
+  //   species,
+  //   pokemon_v2_pokemonspecies_aggregate: {
+  //     aggregate: { count }
+  //   }
+  // } = data
+  // console.log({ data })
 
-  const loadMoreSpecies = () => {
-    offset.current += species.length
-    if (offset.current > count) {
-      offset.current = count - 1
-    }
-    fetchMore({
-      variables: {
-        offset: offset.current
-      }
-    })
-  }
+  // const loadMoreSpecies = () => {
+  //   if (offset.current > count) {
+  //     offset.current = count - 1
+  //   }
+  //   fetchMore({
+  //     variables: {
+  //       offset: offset.current
+  //     }
+  //   })
+  // }
 
-  if (error) return <p>Error loading posts.</p>
+  // if (error) return <p>Error loading posts.</p>
   if (loading && !loadingMoreSpecies) return <p>Loading</p>
 
-  const areMoreSpecies = species.length < count
+  // const areMoreSpecies = species.length < count
 
   return (
-    <section>
-      {/* TODO: turn into a grid */}
-      <SpeciesGridStyles>
-        {species.map((poke: any, index: number) => {
-          const { urls } = poke.pokemon_v2_pokemons[0].sprites[0]
-          const frontDefault = JSON.parse(urls)['front_default']
-          return (
-            <Tile key={poke.id} image={frontDefault} name={poke.name}>
-              <a href='#'>{poke.name}</a>
-            </Tile>
-          )
-        })}
-      </SpeciesGridStyles>
-      <div>
-        {areMoreSpecies && (
-          <LoadButton
-            type='button'
-            className='btn btn-center'
-            onClick={() => loadMoreSpecies()}
-            disabled={loadingMoreSpecies || loading}
-          >
-            {loadingMoreSpecies ? `loading` : `pokémon plz`}
-          </LoadButton>
-        )}
-      </div>
-    </section>
+    <SpeciesGridStyles>
+      {species.map((poke: any, index: number) => {
+        const { urls } = poke.pokemon_v2_pokemons[0].sprites[0]
+        const frontDefault = JSON.parse(urls)['front_default']
+        return (
+          <Link key={poke.id} href={`/p/${poke.id}`}>
+            <a>
+              <Tile
+                image={frontDefault}
+                name={poke.name}
+                onClick={() => handleSave(poke.id)}
+              >
+                <p>{poke.name}</p>
+              </Tile>
+            </a>
+          </Link>
+        )
+      })}
+    </SpeciesGridStyles>
+    // <div>
+    //   {/* areMoreSpecies && (
+    //     <LoadButton
+    //       type='button'
+    //       className='btn btn-center'
+    //       onClick={() => loadMoreSpecies()}
+    //       disabled={loadingMoreSpecies || loading}
+    //     >
+    //       {loadingMoreSpecies ? `loading` : `pokémon plz`}
+    //     </LoadButton>
+    //   ) */}
+    // </div>
   )
 }
 
