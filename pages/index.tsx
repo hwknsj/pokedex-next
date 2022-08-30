@@ -1,10 +1,10 @@
-import SpeciesList, {
+import SpeciesGrid, {
   ALL_SPECIES_QUERY,
   allSpeciesQueryVariables
 } from '../components/species-list'
 import { initializeApollo, addApolloState } from '../lib/apollo-client'
 
-const IndexPage = () => <SpeciesList />
+const IndexPage = () => <SpeciesGrid />
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()

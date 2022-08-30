@@ -363,7 +363,11 @@ export const theme = (dark = false) => {
     typeography,
     links,
     buttons,
-    cubicBezier: 'cubic-bezier(0.4, 0.01, 0.165, 0.99)'
+    helpers: {
+      boxShadow: '0.4rem 1.2rem 2.4rem 0 rgba(0, 0, 0, 0.09)',
+      boxShadowHover: '0.4rem 1.2rem 2rem 0.1rem rgba(0, 0, 0, 0.2)',
+      cubicBezier: 'cubic-bezier(0.4, 0.01, 0.165, 0.99)'
+    }
   }
 }
 

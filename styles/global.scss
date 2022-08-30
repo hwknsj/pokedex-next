@@ -21,3 +21,34 @@ body {
 a {
   color: #0a5bc3;
 }
+.container {
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  grid-template-areas:
+    'nav'
+    'main';
+  grid-auto-flow: row;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  & > nav,
+  & > .nav {
+    grid-area: nav;
+    // column-span: all;
+    display: flex;
+    // grid-column: 1 / span 12;
+  }
+  & > main {
+    margin: 0;
+    grid-area: main;
+    display: grid;
+    column-span: all;
+    grid-auto-columns: min-content;
+    gap: 4rem;
+    // height: 100%;
+    // width: 100%;
+    // grid-column: 1 / span 12;
+    // grid-row: 2;
+  }
+}

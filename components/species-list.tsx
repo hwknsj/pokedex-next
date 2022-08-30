@@ -1,4 +1,32 @@
 import { gql, useQuery, NetworkStatus } from '@apollo/client'
+import styled from '@emotion/styled'
+import { css, useTheme } from '@emotion/react'
+import { useRef } from 'react'
+import Tile from './tile'
+
+const SpeciesGridStyles = styled.section`
+  display: grid;
+  /* grid-template-columns: 1fr 1fr; */
+  /* grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* grid-auto-rows: 2; */
+  grid-gap: 4rem;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+`
+
+const LoadButton = styled.button`
+  ${({ theme }) => css(theme.buttons.primary)};
+  min-height: 4rem;
+  padding: 2rem;
+  font-weight: 800;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  max-width: 40rem;
+`
 
 export const ALL_SPECIES_QUERY = gql`
   query allGen1Pokemon(
@@ -7,7 +35,7 @@ export const ALL_SPECIES_QUERY = gql`
     $limit: Int
     $offset: Int
   ) {
-    pokemon_v2_pokemonspecies(
+    species: pokemon_v2_pokemonspecies(
       where: { generation_id: { _eq: $generation_id } }
       limit: $limit
       offset: $offset
@@ -27,8 +55,8 @@ export const ALL_SPECIES_QUERY = gql`
       is_legendary
       is_mythical
       pokemon_v2_pokemons {
-        pokemon_v2_pokemonsprites {
-          sprites
+        sprites: pokemon_v2_pokemonsprites {
+          urls: sprites
         }
       }
       pokemon_v2_pokemonspeciesdescriptions(
@@ -52,7 +80,8 @@ export const allSpeciesQueryVariables = {
   limit: 25
 }
 
-export default function PostList() {
+export const SpeciesGrid = () => {
+  const offset = useRef(0)
   const { loading, error, data, fetchMore, networkStatus } = useQuery(
     ALL_SPECIES_QUERY,
     {
@@ -61,14 +90,26 @@ export default function PostList() {
     }
   )
 
+  const theme = useTheme()
+  console.log({ theme })
+
   const loadingMoreSpecies = networkStatus === NetworkStatus.fetchMore
-  const { pokemon_v2_pokemonspecies, pokemon_v2_pokemonspecies_aggregate } =
-    data
+  const {
+    species,
+    pokemon_v2_pokemonspecies_aggregate: {
+      aggregate: { count }
+    }
+  } = data
+  console.log({ data })
 
   const loadMoreSpecies = () => {
+    offset.current += species.length
+    if (offset.current > count) {
+      offset.current = count - 1
+    }
     fetchMore({
       variables: {
-        offset: pokemon_v2_pokemonspecies.length
+        offset: offset.current
       }
     })
   }
@@ -76,29 +117,36 @@ export default function PostList() {
   if (error) return <p>Error loading posts.</p>
   if (loading && !loadingMoreSpecies) return <p>Loading</p>
 
-  // TODO: fix this, or paginate
-  const areMoreSpecies =
-    pokemon_v2_pokemonspecies.length < pokemon_v2_pokemonspecies_aggregate.count
+  const areMoreSpecies = species.length < count
 
   return (
     <section>
       {/* TODO: turn into a grid */}
-      <ul>
-        {pokemon_v2_pokemonspecies.map((poke: any, index: number) => (
-          <li key={poke.id}>
-            <span>{index + 1}. </span>
-            <a href='#'>{poke.name}</a>
-          </li>
-        ))}
-      </ul>
-      {areMoreSpecies && (
-        <button
-          onClick={() => loadMoreSpecies()}
-          disabled={loadingMoreSpecies || loading}
-        >
-          {loadingMoreSpecies ? `loading` : `pokémon plz`}
-        </button>
-      )}
+      <SpeciesGridStyles>
+        {species.map((poke: any, index: number) => {
+          const { urls } = poke.pokemon_v2_pokemons[0].sprites[0]
+          const frontDefault = JSON.parse(urls)['front_default']
+          return (
+            <Tile key={poke.id} image={frontDefault} name={poke.name}>
+              <a href='#'>{poke.name}</a>
+            </Tile>
+          )
+        })}
+      </SpeciesGridStyles>
+      <div>
+        {areMoreSpecies && (
+          <LoadButton
+            type='button'
+            className='btn btn-center'
+            onClick={() => loadMoreSpecies()}
+            disabled={loadingMoreSpecies || loading}
+          >
+            {loadingMoreSpecies ? `loading` : `pokémon plz`}
+          </LoadButton>
+        )}
+      </div>
     </section>
   )
 }
+
+export default SpeciesGrid

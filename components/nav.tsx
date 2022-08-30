@@ -1,14 +1,25 @@
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+// import { cx } from '@emotion/css'
 
 export const Nav = () => {
-  const { pathname } = useRouter()
-
+  const {
+    query: { caught }
+  } = useRouter()
+  // TODO: some logic with query string or path on button click
   return (
     <nav>
-      <Link href='/'>
-        <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
-      </Link>
+      <button type='button' className={`active`} onClick={() => {}}>
+        All
+      </button>
+      <button type='button' className={`disabled`} onClick={() => {}}>
+        Caught
+      </button>
+      <input
+        type='text'
+        placeholder='Search'
+        aria-label='Search'
+        onChange={() => {}}
+      />
     </nav>
   )
 }

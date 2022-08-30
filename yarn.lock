@@ -163,6 +163,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/css@npm:^11.10.0":
+  version: 11.10.0
+  resolution: "@emotion/css@npm:11.10.0"
+  dependencies:
+    "@emotion/babel-plugin": "npm:^11.10.0"
+    "@emotion/cache": "npm:^11.10.0"
+    "@emotion/serialize": "npm:^1.1.0"
+    "@emotion/sheet": "npm:^1.2.0"
+    "@emotion/utils": "npm:^1.2.0"
+  peerDependencies:
+    "@babel/core": ^7.0.0
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+  checksum: b0766e100338dbacdb0c25d23256f299418f2fac8895fe8092be2d5de20c98c80a74af9814fbd92bac954a6601a5055303664841ab2d6fe9687f87885f1b1685
+  languageName: node
+  linkType: hard
+
 "@emotion/hash@npm:^0.9.0":
   version: 0.9.0
   resolution: "@emotion/hash@npm:0.9.0"
@@ -3178,6 +3196,7 @@ __metadata:
   resolution: "pokedex-next@workspace:."
   dependencies:
     "@apollo/client": "npm:3.6.9"
+    "@emotion/css": "npm:^11.10.0"
     "@emotion/react": "npm:^11.10.4"
     "@emotion/server": "npm:^11.10.0"
     "@emotion/styled": "npm:^11.10.4"
