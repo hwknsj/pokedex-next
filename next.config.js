@@ -10,7 +10,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true
   },
-  // enableTelemetry: false,
   poweredByHeader: false
 }
 

@@ -1,8 +1,17 @@
 import { gql, useQuery, NetworkStatus } from '@apollo/client'
 
 export const ALL_SPECIES_QUERY = gql`
-  query allGen1Pokemon {
-    pokemon_v2_pokemonspecies(where: { generation_id: { _eq: 1 } }) {
+  query allGen1Pokemon(
+    $language_id: Int = 9
+    $generation_id: Int = 1
+    $limit: Int
+    $offset: Int
+  ) {
+    pokemon_v2_pokemonspecies(
+      where: { generation_id: { _eq: $generation_id } }
+      limit: $limit
+      offset: $offset
+    ) {
       name
       id
       evolution_chain_id
@@ -17,8 +26,20 @@ export const ALL_SPECIES_QUERY = gql`
       is_baby
       is_legendary
       is_mythical
+      pokemon_v2_pokemons {
+        pokemon_v2_pokemonsprites {
+          sprites
+        }
+      }
+      pokemon_v2_pokemonspeciesdescriptions(
+        where: { id: { _eq: $language_id } }
+      ) {
+        description
+      }
     }
-    pokemon_v2_pokemonspecies_aggregate(where: { generation_id: { _eq: 1 } }) {
+    pokemon_v2_pokemonspecies_aggregate(
+      where: { generation_id: { _eq: $generation_id } }
+    ) {
       aggregate {
         count
       }
@@ -47,7 +68,7 @@ export default function PostList() {
   const loadMoreSpecies = () => {
     fetchMore({
       variables: {
-        skip: pokemon_v2_pokemonspecies.length
+        offset: pokemon_v2_pokemonspecies.length
       }
     })
   }
