@@ -38,7 +38,7 @@ const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
       typePolicies: {
         Query: {
           fields: {
-            allPosts: concatPagination()
+            pokemon_v2_pokemonspecies: concatPagination()
           }
         }
       }

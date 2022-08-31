@@ -11,7 +11,9 @@ const colorSchema = {
     btnSecondary: '#111111',
     button: {
       bgPrimary: '#111111',
-      bgSecondary: '#FFFFFF'
+      bgSecondary: '#FFFFFF',
+      textPrimary: '#FFFFFF',
+      textSecondary: '#111111'
     },
     link: '#0861B5',
     black: '#111111', // Used for default text, icons and backgrounds.
@@ -70,7 +72,9 @@ const colorSchema = {
     btnSecondary: '#757575',
     button: {
       bgPrimary: '#FFFFFF',
-      bgSecondary: '#111111'
+      textPrimary: '#111111',
+      bgSecondary: '#111111',
+      textSecondary: '#FFFFFF'
     },
     link: '#3C8DD7',
     black: '#111111', // Used for default text, icons and backgrounds.

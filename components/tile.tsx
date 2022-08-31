@@ -10,13 +10,13 @@ export interface TileProps extends PropsWithoutRef<any> {
 export const TileStyled = styled.div<TileProps>`
   height: 200px;
   box-sizing: border-box;
-  /* box-shadow: '8px 8px 16px 0 rgba(0, 0, 0, 0.08)';*/
-  background: white;
+  background: ${({ theme }) => theme.colors.hoverBg};
   border: 1px solid ${({ theme }) => theme.colors.grey5};
   box-shadow: ${({ theme }) => theme.helpers.boxShadow};
   position: relative;
   display: flex;
   flex-direction: column;
+  max-width: 200px;
   img {
     width: 100%;
     height: 200px;

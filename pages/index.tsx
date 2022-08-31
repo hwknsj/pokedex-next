@@ -11,19 +11,22 @@ import {
   APOLLO_STATE_PROP_NAME
 } from '../lib/apollo-client'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { Nav } from '@/components/nav'
 
-const LoadButton = styled.button`
-  ${({ theme }: { theme: Theme }) => css(theme.buttons.primary)};
-  min-height: 4rem;
-  padding: 2rem;
-  font-weight: 800;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  max-width: 40rem;
-`
+// const LoadButton = styled.button`
+//   ${({ theme }: { theme: Theme }) => css(theme.buttons.primary)};
+//   min-height: 4rem;
+//   padding: 2rem;
+//   font-weight: 800;
+//   margin: 0 auto;
+//   display: flex;
+//   justify-content: center;
+//   max-width: 40rem;
+// `
 
 const IndexPage = (props: any) => {
+  const [search, setSearch] = useState('')
   console.log({ props })
   const {
     data: {
@@ -37,12 +40,17 @@ const IndexPage = (props: any) => {
   } = props
 
   return (
-    <SpeciesGrid
-      species={species}
-      count={count}
-      loading={loading}
-      networkStatus={networkStatus}
-    />
+    <>
+      <Nav search={search} setSearch={setSearch} />
+      <SpeciesGrid
+        search={search}
+        setSearch={setSearch}
+        species={species}
+        count={count}
+        loading={loading}
+        networkStatus={networkStatus}
+      />
+    </>
   )
 }
 
@@ -56,7 +64,7 @@ export async function getStaticProps() {
   })
 
   return addApolloState(apolloClient, {
-    props: { data, networkStatus, loading },
+    props: { species: data, data, networkStatus, loading },
     revalidate: 1
   })
 }

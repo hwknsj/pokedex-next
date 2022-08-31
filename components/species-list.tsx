@@ -1,7 +1,13 @@
 import { gql, useQuery, NetworkStatus } from '@apollo/client'
 import styled from '@emotion/styled'
 import { css, useTheme } from '@emotion/react'
-import { Dispatch, SetStateAction, useRef, useState } from 'react'
+import {
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useRef,
+  useState
+} from 'react'
 import Tile from './tile'
 import type { Theme } from '@/styles/theme'
 import { useRouter } from 'next/router'
@@ -72,17 +78,23 @@ export const allSpeciesQueryVariables = {
   // limit: 0
 }
 
-export const SpeciesGrid = ({
-  species,
-  count,
-  loading,
-  networkStatus
-}: {
+export interface SpeciesGridProps extends PropsWithChildren {
   species: any
   count: number
   loading: boolean
   networkStatus: any
-}) => {
+  search: string
+  setSearch: Dispatch<SetStateAction<string>>
+}
+
+export const SpeciesGrid = ({
+  species,
+  count,
+  loading,
+  networkStatus,
+  search,
+  setSearch
+}: SpeciesGridProps) => {
   const [saved, setSaved] = useState<number[]>([])
   // const [offset, setOffset] = useState(species.length)
   // const offset = useRef(species.length)
@@ -94,7 +106,12 @@ export const SpeciesGrid = ({
   //   }
   // )
 
+  const filtered = species.filter(({ name }: { name: string }) =>
+    name.includes(search)
+  )
+
   const { pathname, query } = useRouter()
+  console.log({ filtered })
 
   const handleSave = (poke: any) => {
     const { id } = poke
@@ -141,7 +158,7 @@ export const SpeciesGrid = ({
 
   return (
     <SpeciesGridStyles>
-      {species.map((poke: any, index: number) => {
+      {filtered.map((poke: any, index: number) => {
         const { urls } = poke.pokemon_v2_pokemons[0].sprites[0]
         const frontDefault = JSON.parse(urls)['front_default']
         return (

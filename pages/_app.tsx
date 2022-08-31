@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useApollo } from '@/lib/apollo-client'
 import { GlobalStyles } from '@/styles/globalStyles'
 import { ThemeProvider } from '@/lib/theme-context'
-import '../styles/global.scss'
+// import '../styles/global.scss'
 
 import { Layout } from '@/components/layout'
 
@@ -21,8 +21,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>🥇 Pokédex</title>
       </Head>
       <ApolloProvider client={apolloClient}>
-        <GlobalStyles />
         <ThemeProvider>
+          <GlobalStyles />
           <Layout>
             <Component {...pageProps} />
           </Layout>

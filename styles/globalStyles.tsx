@@ -25,27 +25,12 @@ const cssStyles = (theme: Theme) => css`
   }
   body {
     margin: 0;
-    background: ${theme.colors.bg};
+    background-color: ${theme.colors.bg};
     min-height: 100%;
     font-family: ${theme.typeography.fontFamily};
     font-size: 1.6rem;
     color: ${theme.colors.textPrimary};
   }
-  /* main {
-    ${css(
-    mq({
-      padding: [
-        '0 1rem ',
-        '0 1rem',
-        '0 1rem',
-        '1rem 2rem',
-        '1rem 4rem',
-        '2rem 8rem',
-        '4rem 16rem'
-      ]
-    })
-  )}
-  } */
   footer {
     padding: 0;
   }
@@ -106,8 +91,8 @@ const cssStyles = (theme: Theme) => css`
     color: ${theme.colors.textPrimary};
     a {
       color: ${theme.colors.link};
-      transition: color 0.2s ${theme.cubicBezier},
-        text-decoration 0.2s ${theme.cubicBezier};
+      transition: color 0.2s ${theme.helpers.cubicBezier},
+        text-decoration 0.2s ${theme.helpers.cubicBezier};
       &:hover {
         text-decoration: underline;
         cursor: pointer;
@@ -120,7 +105,7 @@ const cssStyles = (theme: Theme) => css`
       h5,
       h6 {
         color: ${theme.colors.textPrimary};
-        transition: color 0.2s ${theme.cubicBezier};
+        transition: color 0.2s ${theme.helpers.cubicBezier};
         text-decoration: none;
         &:hover {
           color: ${theme.colors.hoverBorder};
